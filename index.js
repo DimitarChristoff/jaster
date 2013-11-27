@@ -18,18 +18,15 @@ module.exports = function(group, tests){
 			keys = Object.keys(tests);
 
 		return function(){
-			tests.beforeEach && beforeEach(tests.beforeEach);
-			tests.afterEach && afterEach(tests.afterEach);
+			tests.beforeEach && beforeEach(tests.beforeEach.bind(this));
+			tests.afterEach && afterEach(tests.afterEach.bind(this));
 
 			tests.beforeAll && tests.beforeAll.call(this);
 			tests.afterAll && (afterAll = tests.afterAll);
 
 			keys.forEach(function(key){
-				var method;
-
 				if (mutators.indexOf(key) === -1){
-					method = (key.indexOf('//') !== 0) ? it : xit;
-					method.call(this, key, this[key]);
+					((key.indexOf('//') !== 0) ? it : xit).call(this, key, tests[key].bind(this));
 				}
 				else {
 					delete tests[key];

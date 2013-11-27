@@ -2,17 +2,14 @@
 
 var suite = require('../');
 
-
 suite('Should have a test group that passes ', {
 
 	beforeAll: function(){
-		console.log(Object.keys(this));
 		console.log('Welcome to the suite');
+		this.counter = 0;
 	},
 
 	beforeEach: function(){
-		console.log(Object.keys(this));
-		this.counter || (this.counter = 0);
 		console.log('Running assertion ', ++this.counter);
 	},
 
@@ -20,12 +17,22 @@ suite('Should have a test group that passes ', {
 		expect(true).toBeTruthy();
 	},
 
+	'// It should not pass or run': function(){
+		expect(true).not.toBeTruthy();
+	},
+
 	afterEach: function(){
-		console.log(jasmine.getEnv());
+		// console.log(jasmine.getEnv());
 	},
 
 	afterAll: function(){
-		console.log('Bye');
+		// console.log('Bye');
 	}
 
+});
+
+suite('// disabled suite is disabled', {
+	'No go!': function(){
+		expect(true).toBeTruthy();
+	}
 });
