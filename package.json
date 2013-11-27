@@ -1,0 +1,26 @@
+{
+  "name": "jaster",
+  "version": "0.0.1",
+  "description": "Sugar for busterjs style assertions in jasmine-node",
+  "main": "index.js",
+  "dependencies": {
+    "jasmine-node": "~1.11.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DimitarChristoff/jaster"
+  },
+  "keywords": [
+    "jasmine",
+    "buster"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DimitarChristoff/jaster/issues"
+  }
+}
