@@ -7,46 +7,39 @@ var mutators = [
 	'afterAll'
 ];
 
+/**
+ * @module jaster suite sugar
+ * @param {string} group description
+ * @param {object} tests key / value pair object
+ */
 module.exports = function(group, tests){
-
-	var getTests = function(){
+	function prepareTests(tests){
 		var afterAll,
-			keys = Object.keys(this);
+			keys = Object.keys(tests);
 
-		if (this.beforeEach){
-			beforeEach(this.beforeEach.bind(this));
-		}
+		return function(){
+			tests.beforeEach && beforeEach(tests.beforeEach);
+			tests.afterEach && afterEach(tests.afterEach);
 
-		if (this.afterEach){
-			afterEach(this.afterEach.bind(this));
-		}
+			tests.beforeAll && tests.beforeAll.call(this);
+			tests.afterAll && (afterAll = tests.afterAll);
 
-		if (this.beforeAll){
-			this.beforeAll.call(this);
-		}
+			keys.forEach(function(key){
+				var method;
 
-		if (this.afterAll){
-			afterAll = this.afterAll;
-		}
+				if (mutators.indexOf(key) === -1){
+					method = (key.indexOf('//') !== 0) ? it : xit;
+					method.call(this, key, this[key]);
+				}
+				else {
+					delete tests[key];
+				}
+			}, this);
 
-		keys.forEach(function(key){
-			var method;
+			afterAll && afterAll.call(this);
+		};
+	}
 
-			if (mutators.indexOf(key) === -1){
-				method = (key.indexOf('//') !== 0) ? it : xit;
-				method.call(this, key, this[key]);
-			}
-			else {
-				delete this[key];
-			}
-		}, this);
-
-
-		if (afterAll){
-			afterAll.call(this);
-		}
-	};
-
-	describe(group, getTests.bind(tests));
-
+	var method = (group.indexOf('//') !== 0) ? describe : xdescribe;
+	method(group, prepareTests(tests));
 };
