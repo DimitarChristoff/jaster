@@ -16,7 +16,7 @@ suite('I like to test things', {
 	'It should pass': function(){
 		expect(true).toBe(true);
 	},
-	'It should faile': function(){
+	'It should fail': function(){
 		expect(true).toBe(false);
 	},
 	'// It should be disabled': function(){
