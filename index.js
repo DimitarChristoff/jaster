@@ -1,11 +1,17 @@
 'use strict';
 
+require('colors');
+
 var mutators = [
 	'beforeEach',
 	'afterEach',
 	'beforeAll',
 	'afterAll'
-];
+], isDisabled = function(testName){
+	return testName.indexOf('//') === 0;
+}, cleanName = function (testName) {
+	return testName.replace(/(\/\/|x)\s?/, '');
+};
 
 /**
  * @module jaster suite sugar
@@ -26,7 +32,9 @@ module.exports = function(group, tests){
 
 			keys.forEach(function(key){
 				if (mutators.indexOf(key) === -1){
-					((key.indexOf('//') !== 0) ? it : xit).call(this, key, tests[key].bind(this));
+					var disabled = isDisabled(key);
+					(disabled ? xit : it).call(this, key, tests[key].bind(this));
+					disabled && console.log('    × '.red + 'skipped test: '.cyan + cleanName(key));
 				}
 				else {
 					delete tests[key];
@@ -37,6 +45,6 @@ module.exports = function(group, tests){
 		};
 	}
 
-	var method = (group.indexOf('//') !== 0) ? describe : xdescribe;
+	var method = (isDisabled(group)) ? xdescribe : describe;
 	method(group, prepareTests(tests));
 };

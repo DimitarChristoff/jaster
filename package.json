@@ -4,7 +4,8 @@
   "description": "Sugar for busterjs style assertions in jasmine-node",
   "main": "index.js",
   "dependencies": {
-    "jasmine-node": "~1.11.0"
+    "jasmine-node": "~1.11.0",
+    "colors": "~0.6.0-1"
   },
   "devDependencies": {},
   "scripts": {
